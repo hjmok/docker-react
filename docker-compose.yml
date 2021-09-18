@@ -1,45 +1,8 @@
-#This yaml file allows Docker Compose to create the two containers (redi-server and node-app) below on the same network, basically allowing two separate containers to communicate with each other
 version: "3"
-#creating two unique services called web and tests for different functionality
 services:
-  #creating a container called web
   web:
-    stdin_open: true
-    #allow for automation updates to the web after changing App.js
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-    #so normally if our dockerfile was just called dockerfile, we could use "build: .", which just tells it to look inside the current directory for a file called dockerfile
-    #However, because our dockerfile is called Dockerfile.dev, we have to use context to look inside the specified directory ("." means current directory) then specify the dockerfile name to look for in said directory
     build:
       context: .
-      dockerfile: Dockerfile.dev
-    #specifying the ports to map this container to using local:container syntax
+      dockerfile: Dockerfile
     ports:
-      - "3000:3000"
-    #specifying our specific volumes
-    #so first one says do not try to map a module against node modules inside the container
-    #second one says take our current directory with . and use : to map said current directory to the "app" folder inside the container
-    volumes:
-      - /app/node_modules
-      - .:/app
-      #/home/node/app/node_modules
-      #.:/home/node/app
-
-  #creating a container called tests
-  tests:
-    stdin_open: true
-    #so normally if our dockerfile was just called dockerfile, we could use "build: .", which just tells it to look inside the current directory for a file called dockerfile
-    #However, because our dockerfile is called Dockerfile.dev, we have to use context to look inside the specified directory ("." means current directory) then specify the dockerfile name to look for in said directory
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    #specifying our specific volumes
-    #so first one says do not try to map a module against node modules inside the container
-    #second one says take our current directory with . and use : to map said current directory to the "app" folder inside the container
-    volumes:
-      - /app/node_modules
-      - .:/app
-      #/home/node/app/node_modules
-      #.:/home/node/app
-    #overwriting the starting command when this "test" service is created with "npm run test" rather than using the default "npm run start"
-    command: ["npm", "run", "test"]
+      - "80:80"
