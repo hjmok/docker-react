@@ -1,0 +1,16 @@
+language: generic
+
+#Anytime we use docker, we're using ourselves super user permissions
+sudo: required
+
+services:
+  - docker #telling travis CI to automatically install a copy of docker into our running container
+
+before_install:
+  #below is the command that should be executed to build our docker image  using Dockerfile.dev in our current working directory using "."
+  #also providing it a tag name using -t of "hjmok/docker-react" so we don't have to worry about a long ID
+  - docker build -t hjmok/docker-react -f Dockerfile.dev .
+
+#script section contains all the commands needed to run the test suites
+script:
+  - docker run -e CI=true hjmok/docker-react npm run test
