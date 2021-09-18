@@ -20,8 +20,10 @@ services:
     #so first one says do not try to map a module against node modules inside the container
     #second one says take our current directory with . and use : to map said current directory to the "app" folder inside the container
     volumes:
-      - /home/node/app/node_modules
-      - .:/home/node/app
+      - /app/node_modules
+      - .:/app
+      #/home/node/app/node_modules
+      #.:/home/node/app
 
   #creating a container called tests
   tests:
@@ -35,7 +37,9 @@ services:
     #so first one says do not try to map a module against node modules inside the container
     #second one says take our current directory with . and use : to map said current directory to the "app" folder inside the container
     volumes:
-      - /home/node/app/node_modules
-      - .:/home/node/app
+      - /app/node_modules
+      - .:/app
+      #/home/node/app/node_modules
+      #.:/home/node/app
     #overwriting the starting command when this "test" service is created with "npm run test" rather than using the default "npm run start"
     command: ["npm", "run", "test"]
