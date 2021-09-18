@@ -1,0 +1,23 @@
+#Dockerfile.dev Container for just development
+#Production container is just called Dockerfile
+
+#Specify a base image, by using existing docker image 'alpine'
+FROM node:alpine
+#node:alpine is like an OS, as it comes with a lot of useful pre-installed programs for us to use as our base image
+
+USER node
+RUN mkdir -p /home/node/app
+WORKDIR '/app'
+
+#Install some dependencies
+#we are using COPY to take the package.json file in our FRONTEND directory, as they are outside of our base container
+COPY --chown=node:node ./package.json ./
+RUN npm install 
+#COPY the rest including index.js. So we did this because we don't want to copy everything at once if a change is made to index.js. This way, we separated our copies so the cache for package.json remains if it's not changed, and only index.js copy is executed. 
+COPY --chown=node:node ./ ./
+
+#Default command, this tells the image what to do when it starts as a container
+CMD ["npm","start"]
+#so if this new container we made is ever used, we're saying make the start up command "npm run start"
+
+#so all we did here was create a new container by taking the node:alpine base, grabbing the json and js files we made within our FRONTEND directory to the container, adding npm install as part of the container programs along with a start up command, then saving the Image for if we ever want to use it
