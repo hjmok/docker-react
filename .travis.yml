@@ -4,7 +4,8 @@ language: generic
 sudo: required
 
 services:
-  - docker #telling travis CI to automatically install a copy of docker into our running container
+  #telling travis CI to automatically install a copy of docker into our running container
+  - docker
 
 before_install:
   #below is the command that should be executed to build our docker image  using Dockerfile.dev in our current working directory using "."
