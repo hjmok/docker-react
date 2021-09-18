@@ -15,3 +15,17 @@ before_install:
 #script section contains all the commands needed to run the test suites
 script:
   - docker run -e CI=true hjmok/docker-react npm run test
+
+#this section tells how to take the travis CI configuration and deploy it to AWS
+deploy:
+  #travis CI already has elasticbeanstalk instructions built in
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "docker-react"
+  env: "Dockerreact-env"
+  bucket_name: "elasticbeanstalk-us-east-2-909807248326"
+  bucket_path: "docker-react"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
